@@ -89,7 +89,7 @@ class RecreateBranch < GitFlow/'recreate-branch'
     #
     ohai "1. Processing branch '#{source}' for merge-commits..."
 
-    branches = opts.whitelist_file_name.length > 0 ? getMergedBranches(opts.base, source) : getWhiteListBranches(opts.whitelist_file_name)
+    branches = opts.whitelist_file_name.length > 0 ? getWhiteListBranches(opts.whitelist_file_name) : getMergedBranches(opts.base, source)
 
     if branches.empty?
       terminate "No feature branches detected, '#{source}' matches '#{opts.base}'."
