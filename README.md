@@ -35,7 +35,7 @@ A collection of commands to help share your rr-cache.
         -g, --git-dir DIR                The location of your rr-cache .git dir, defaults to .git/rr-cache/.git.
         -b, --branch NAME                The name of the branch your rr-cache is stored in, defaults to rr-cache.
         -r, --remote NAME                The name of the remote to use when getting the latest rr-cache, defaults to origin.
-        -w, --whitelist-file-name NAME'	 Specify the white list file of a carriage-return delimited list of branch names to whitelist.
+        -w, --whitelist-file-name NAME	 Specify the white list file of a carriage-return delimited list of branch names to whitelist.
 
 **Sub-commands - Usage:**
 
