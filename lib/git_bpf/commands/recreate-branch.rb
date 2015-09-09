@@ -36,7 +36,9 @@ class RecreateBranch < GitFlow/'recreate-branch'
       ['-r', '--remote NAME',
         "Specify the remote repository to work with. Only works with the -d option.",
         lambda { |n| opts.remote = n }],
-
+      ['-w', '--whitelist-file-name NAME',
+	"Specify the white list file of a carriage-return delimited list of branch names to whitelist.",
+	lambda { |n| opts.whitelist_file_name = n }],
     ]
   end
 

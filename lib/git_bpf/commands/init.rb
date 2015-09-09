@@ -16,6 +16,7 @@ class Init < GitFlow/'init'
     opts.script_dir_name = 'git-bpf'
     opts.remote_name = 'origin'
     opts.rerere_branch = 'rr-cache'
+    opts.whitelist_file_name = ''
 
     [
       ['-d', '--directory-name NAME',
@@ -27,6 +28,9 @@ class Init < GitFlow/'init'
       ['-b', '--rerere-branch NAME',
         "",
         lambda { |n| opts.rerere_branch = n }],
+      ['-w', '--whitelist-file-name NAME',
+        "",
+        lambda { |n| opts.whitelist_file_name = n }],
     ]
   end
 
