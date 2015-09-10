@@ -21,34 +21,34 @@ class RecreateBranch < GitFlow/'recreate-branch'
       ['-a', '--base NAME',
         "A reference to the commit from which the source branch is based, defaults to #{opts.base}.",
         lambda { |n| opts.base = n }],
-      ['-b', '--branch NAME',
-        "Instead of deleting the source branch and replacng it with a new branch of the same name, leave the source branch and create a new branch called NAME.",
-        lambda { |n| opts.branch = n }],
-      ['-x', '--exclude NAME',
-        "Specify a list of branches to be excluded.",
-        lambda { |n| opts.exclude.push(n) }],
-      ['-l', '--list',
-        "Process source branch for merge commits and list them. Will not make any changes to any branches.",
-        lambda { |n| opts.list = true }],
-      ['-d', '--discard',
-        "Discard the existing local source branch and checkout a new source branch from the remote if one exists. If no remote is specified with -r, gitbpf will use the configured remote, or origin if none is configured.",
-        lambda { |n| opts.discard = true }],
-      ['-r', '--remote NAME',
-        "Specify the remote repository to work with. Only works with the -d option.",
-        lambda { |n| opts.remote = n }],
-      ['-w', '--whitelist-file-name NAME',
-	"Specify the white list file of a carriage-return delimited list of branch names to whitelist.",
-	lambda { |n| opts.whitelist_file_name = n }],
-    ]
-  end
+        ['-b', '--branch NAME',
+          "Instead of deleting the source branch and replacng it with a new branch of the same name, leave the source branch and create a new branch called NAME.",
+          lambda { |n| opts.branch = n }],
+          ['-x', '--exclude NAME',
+            "Specify a list of branches to be excluded.",
+            lambda { |n| opts.exclude.push(n) }],
+            ['-l', '--list',
+              "Process source branch for merge commits and list them. Will not make any changes to any branches.",
+              lambda { |n| opts.list = true }],
+              ['-d', '--discard',
+                "Discard the existing local source branch and checkout a new source branch from the remote if one exists. If no remote is specified with -r, gitbpf will use the configured remote, or origin if none is configured.",
+                lambda { |n| opts.discard = true }],
+                ['-r', '--remote NAME',
+                  "Specify the remote repository to work with. Only works with the -d option.",
+                  lambda { |n| opts.remote = n }],
+                  ['-w', '--whitelist-file-name NAME',
+                   "Specify the white list file of a carriage-return delimited list of branch names to whitelist.",
+                   lambda { |n| opts.whitelist_file_name = n }],
+                 ]
+               end
 
-  def execute(opts, argv)
-    if argv.length != 1
-      run('recreate-branch', '--help')
-      terminate
-    end
+               def execute(opts, argv)
+                if argv.length != 1
+                  run('recreate-branch', '--help')
+                  terminate
+                end
 
-    source = argv.pop
+                source = argv.pop
 
     # If no new branch name provided, replace the source branch.
     opts.branch = source if opts.branch == nil
@@ -111,11 +111,11 @@ class RecreateBranch < GitFlow/'recreate-branch'
     puts
     puts "If you see something unexpected check:"
     puts "a) that your '#{source}' branch is up to date"
-    puts "b) if '#{opts.base}' is a branch, make sure it is also up to date."
-    opoo "If there are any non-merge commits in '#{source}', they will not be included in '#{opts.branch}'. You have been warned."
-    if not promptYN "Proceed with #{source} branch recreation?"
-      terminate "Aborting."
-    end
+puts "b) if '#{opts.base}' is a branch, make sure it is also up to date."
+opoo "If there are any non-merge commits in '#{source}', they will not be included in '#{opts.branch}'. You have been warned."
+if not promptYN "Proceed with #{source} branch recreation?"
+  terminate "Aborting."
+end
 
     #
     # 2. Backup existing local source branch.
@@ -186,25 +186,26 @@ class RecreateBranch < GitFlow/'recreate-branch'
   def getWhiteListBranches(file)
     branches = []
     File.open(file, "r") do |file_handle|
-	file_handle.each_line do |name|
-	branches.push name unless branches.include? name
-    end
-    return branches
-  end
+     file_handle.each_line do |name|
+       branches.push name unless branches.include? name
+     end
+   end
+   return branches
+ end
 
-  def getMergedBranches(base, source)
-    branches = []
-    merges = git('rev-list', '--parents', '--merges', '--reverse', "#{base}...#{source}").strip
+ def getMergedBranches(base, source)
+  branches = []
+  merges = git('rev-list', '--parents', '--merges', '--reverse', "#{base}...#{source}").strip
 
-    merges.split("\n").each do |commits|
-      parents = commits.split("\s")
-      commit = parents.shift
+  merges.split("\n").each do |commits|
+    parents = commits.split("\s")
+    commit = parents.shift
 
-      parents.each do |parent|
-        name = git('name-rev', parent, '--name-only').strip
-        alt_base = git('name-rev', base, '--name-only').strip
-        remote_heads = /remote\/\w+\/HEAD/
-        unless name.include? source or name.include? alt_base or name.match remote_heads
+    parents.each do |parent|
+      name = git('name-rev', parent, '--name-only').strip
+      alt_base = git('name-rev', base, '--name-only').strip
+      remote_heads = /remote\/\w+\/HEAD/
+      unless name.include? source or name.include? alt_base or name.match remote_heads
           # Make sure not to include the tilde part of a branch name (e.g. '~2')
           # as this signifies a commit that's behind the head of the branch but
           # we want to merge in the head of the branch.
