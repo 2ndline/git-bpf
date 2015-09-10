@@ -16,6 +16,7 @@ class RecreateBranch < GitFlow/'recreate-branch'
   def options(opts)
     opts.base = 'master'
     opts.exclude = []
+    opts.whitelist_file_name = ''
 
     [
       ['-a', '--base NAME',
