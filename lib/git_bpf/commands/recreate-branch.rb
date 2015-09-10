@@ -187,7 +187,8 @@ end
   def getWhiteListBranches(file)
     branches = []
     File.open(file, "r") do |file_handle|
-     file_handle.each_line do |name|
+     file_handle.each_line do |branch|
+       name = branch.strip
        branches.push name unless branches.include? name
      end
    end
